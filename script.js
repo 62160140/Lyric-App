@@ -36,8 +36,8 @@ function showData(songs){
   // console.log(songs);
 
   result.innerHTML = `
-    <ul class="song">
-       ${songs.data.map(song=>`<li><span><strong>${song.artist.name} - ${song.title}</strong></span></li>`).join("")}
+    <ul class="songs">
+       ${songs.data.map(song=>`<li><span><strong>${song.artist.name}</strong> - ${song.title}</span><button class="btn">เนื้อเพลง</button></li>`).join("")}
     </ul>
   `
 }
