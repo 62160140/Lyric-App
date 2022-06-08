@@ -39,7 +39,12 @@ function showData(songs){
           <span>
           <strong>${song.artist.name}</strong> - ${song.title}
           </span>
-          <button class="btn">เนื้อเพลง</button>
+          <button class="btn"
+          
+          data-artist="${song.artist.name}"
+          data-song="${song.title}"
+          
+          >เนื้อเพลง</button>
           </li>`
        ).join("")}
     </ul>
@@ -59,5 +64,45 @@ async function getMoreSongs(songURL){
   console.log(songURL);
   const result  = await fetch(`https://cors-anywhere.herokuapp.com/${songURL}`);
   const allSong =  await result.json()
-  showData(allSong)
+  showData(allSong);
+}
+
+result.addEventListener('click',e=>{
+  const clickEl = e.target;
+
+  if(clickEl.tagName == "BUTTON"){
+    const artist = clickEl.getAttribute('data-artist');
+    const songName = clickEl.getAttribute('data-song');
+    getLyrics(artist,songName);
+  }
+  
+});
+
+async function getLyrics(artist,songName) {
+  const res = await fetch(`${url}/v1/${artist}/${songName}`);
+  const data = await res.json();
+  const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g,"<br>");
+  console.log(lyrics);
+
+  if(lyrics){
+    result.innerHTML = `
+      <h2>
+      <span>
+      <strong>${artist}</strong> - ${songName}
+      </span>
+      </h2>
+      <span>${lyrics}</span>
+    `
+  }else{
+    result.innerHTML = `
+      <h2>
+      <span>
+      <strong>${artist}</strong> - ${songName}
+      </span>
+      </h2>
+      <span>ไม่มีข้อมูลเนื้อเพลงนี้</span>
+    `
+  }
+
+  more.innerHTML = ''
 }
