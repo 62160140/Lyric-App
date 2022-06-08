@@ -114,3 +114,12 @@ ul.songs li{
 .btn:hover{
   transform: scale(.95)
 }
+
+.more{
+  display: flex;
+  justify-content: center;
+}
+
+.btn{
+  margin-right: 5px;
+}

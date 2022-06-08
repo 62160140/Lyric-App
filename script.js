@@ -34,16 +34,30 @@ async function searchLyrics(songText){
 function showData(songs){
   result.innerHTML = `
     <ul class="songs">
-       ${songs.data.map(song=>`<li><span><strong>${song.artist.name}</strong> - ${song.title}</span><button class="btn">เนื้อเพลง</button></li>`).join("")}
+       ${songs.data.map(song=>
+          `<li>
+          <span>
+          <strong>${song.artist.name}</strong> - ${song.title}
+          </span>
+          <button class="btn">เนื้อเพลง</button>
+          </li>`
+       ).join("")}
     </ul>
-  `
+  `;
 
   if(songs.next || songs.prev){
-    more.innerHTML=`
-    ${songs.prev ? `<button class="btn">ก่อนหน้า</button>` :  ''}
-    ${songs.next ? `<button class="btn">ถัดไป</button>` :  ''}
+    more.innerHTML = `
+    ${songs.prev ? `<button class="btn" onclick="getMoreSongs('${songs.prev}')">ก่อนหน้า</button>`: ''}
+    ${songs.next ? `<button class="btn" onclick="getMoreSongs('${songs.next}')">ถัดไป</button>`: ''}
     `
   }else{
-    more.innerHTML=''
+    more.innerHTML = ''
   }
+}
+
+async function getMoreSongs(songURL){
+  console.log(songURL);
+  const result  = await fetch(`https://cors-anywhere.herokuapp.com/${songURL}`);
+  const allSong =  await result.json()
+  showData(allSong)
 }
